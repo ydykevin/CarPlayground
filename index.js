@@ -102,7 +102,7 @@ initScene = function () {
   // Ground
   var NoiseGen = new SimplexNoise();
 
-  var ground_geometry = new THREE.PlaneGeometry(300, 300, 100, 100);
+  var ground_geometry = new THREE.PlaneGeometry(500, 500, 100, 100);
   for (var i = 0; i < ground_geometry.vertices.length; i++) {
     var vertex = ground_geometry.vertices[i];
     //vertex.y = NoiseGen.noise( vertex.x / 30, vertex.z / 30 ) * 1;
@@ -141,7 +141,7 @@ initScene = function () {
         new THREE.MeshFaceMaterial(car_materials)
       );
       mesh.position.y = 30;
-      mesh.position.x = 50
+      mesh.position.x = 50;
       mesh.castShadow = mesh.receiveShadow = true;
 
       vehicle = new Physijs.Vehicle(
@@ -210,55 +210,7 @@ initScene = function () {
       });
     });
   });
-
-  // Bumpers
-  var bumper,
-    bumper_geom = new THREE.BoxGeometry(2, 1, 50);
-
-  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
-    restitution: 0.2,
-  });
-  bumper.position.y = 1;
-  bumper.position.x = -24;
-  bumper.receiveShadow = true;
-  bumper.castShadow = true;
-  scene.add(bumper);
-
-  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
-    restitution: 0.2,
-  });
-  bumper.position.y = 1;
-  bumper.position.x = 24;
-  bumper.receiveShadow = true;
-  bumper.castShadow = true;
-  scene.add(bumper);
-
-  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
-    restitution: 0.2,
-  });
-  bumper.position.y = 1;
-  bumper.position.z = -24;
-  bumper.rotation.y = Math.PI / 2;
-  bumper.receiveShadow = true;
-  bumper.castShadow = true;
-  scene.add(bumper);
-
-  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
-    restitution: 0.2,
-  });
-  bumper.position.y = 1;
-  bumper.position.z = 24;
-  bumper.rotation.y = Math.PI / 2;
-  bumper.receiveShadow = true;
-  bumper.castShadow = true;
-  scene.add(bumper);
-
-  var sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-  var sphereMaterial = new THREE.MeshLambertMaterial({ wireframe: false });
-  var sphere = new Physijs.SphereMesh(sphereGeometry, sphereMaterial);
-  sphere.position.x = 10;
-  sphere.position.y = 2;
-  bumper.add(sphere);
+  createBowling();
   requestAnimationFrame(render);
   scene.simulate();
 };
