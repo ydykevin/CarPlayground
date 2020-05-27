@@ -1,5 +1,6 @@
 "use strict";
 
+// import { BowlingBall } from './bowling'
 Physijs.scripts.worker = "js/physijs_worker.js";
 Physijs.scripts.ammo = "ammo.js";
 
@@ -13,7 +14,12 @@ var initScene,
   light,
   camera,
   vehicle,
+  bowlingball,
   loader;
+
+var pinos = new Array(10);
+var loadingManager = new THREE.LoadingManager();
+var textureLoader = new THREE.TextureLoader(loadingManager);
 
 initScene = function () {
   renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -128,13 +134,14 @@ initScene = function () {
 
   var json_loader = new THREE.JSONLoader();
 
-  json_loader.load("model/carbody.js", function (car, car_materials) {
-    json_loader.load("model/wheel.js", function (wheel, wheel_materials) {
+  json_loader.load("model/car/carbody.js", function (car, car_materials) {
+    json_loader.load("model/car/wheel.js", function (wheel, wheel_materials) {
       var mesh = new Physijs.BoxMesh(
         car,
         new THREE.MeshFaceMaterial(car_materials)
       );
-      mesh.position.y = 2;
+      mesh.position.y = 30;
+      mesh.position.x = 50
       mesh.castShadow = mesh.receiveShadow = true;
 
       vehicle = new Physijs.Vehicle(
@@ -204,6 +211,54 @@ initScene = function () {
     });
   });
 
+  // Bumpers
+  var bumper,
+    bumper_geom = new THREE.BoxGeometry(2, 1, 50);
+
+  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
+    restitution: 0.2,
+  });
+  bumper.position.y = 1;
+  bumper.position.x = -24;
+  bumper.receiveShadow = true;
+  bumper.castShadow = true;
+  scene.add(bumper);
+
+  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
+    restitution: 0.2,
+  });
+  bumper.position.y = 1;
+  bumper.position.x = 24;
+  bumper.receiveShadow = true;
+  bumper.castShadow = true;
+  scene.add(bumper);
+
+  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
+    restitution: 0.2,
+  });
+  bumper.position.y = 1;
+  bumper.position.z = -24;
+  bumper.rotation.y = Math.PI / 2;
+  bumper.receiveShadow = true;
+  bumper.castShadow = true;
+  scene.add(bumper);
+
+  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
+    restitution: 0.2,
+  });
+  bumper.position.y = 1;
+  bumper.position.z = 24;
+  bumper.rotation.y = Math.PI / 2;
+  bumper.receiveShadow = true;
+  bumper.castShadow = true;
+  scene.add(bumper);
+
+  var sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
+  var sphereMaterial = new THREE.MeshLambertMaterial({ wireframe: false });
+  var sphere = new Physijs.SphereMesh(sphereGeometry, sphereMaterial);
+  sphere.position.x = 10;
+  sphere.position.y = 2;
+  bumper.add(sphere);
   requestAnimationFrame(render);
   scene.simulate();
 };
