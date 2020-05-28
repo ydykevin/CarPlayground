@@ -1,3 +1,6 @@
+var pin = new Array(10);
+// var loadingManager = new THREE.LoadingManager();
+var textureLoader = new THREE.TextureLoader();
 function createBowling() {
   // Bumpers
   var bumper,
@@ -41,10 +44,79 @@ function createBowling() {
   bumper.castShadow = true;
   scene.add(bumper);
 
-  var sphereGeometry = new THREE.SphereGeometry(4, 20, 20);
-  var sphereMaterial = new THREE.MeshLambertMaterial({ wireframe: false });
-  var sphere = new Physijs.SphereMesh(sphereGeometry, sphereMaterial);
-  sphere.position.x = 10;
-  sphere.position.y = 2;
-  bumper.add(sphere);
+  var json_loader = new THREE.JSONLoader();
+
+  var imageBall = textureLoader.load("/texture/bowlingBall.png", function (
+    texture
+  ) {
+    console.log("Texture ball is added");
+  });
+  imageBall.magFilter = THREE.NearestFilter;
+  imageBall.minFilter = THREE.NearestFilter;
+
+  ballMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+        tShine: { type: "t", value: imageBall },
+        time: { type: "f", value: 0 },
+        weight: { type: "f", value: 0 }
+    },
+    // vertexShader: document.getElementById( 'vertexShader' ).textContent,
+    // fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
+    shading: THREE.SmoothShading
+});
+
+  bowlingBall = new THREE.Object3D();
+  bowlingBall.position.set(10, 0, 0);
+  bowlingBall.rotateX((90 * Math.PI) / 180);
+
+  json_loader.load("model/bowling/bowling-ball.json", function (
+    geometry,
+    materials
+  ) {
+    ball = new THREE.Mesh(geometry, ballMaterial);
+    ball.scale.set(2, 2, 2);
+    ball.rotateX(Math.PI);
+    ball.position.set(0, 0, 0);
+    ball.castShadow = true;
+    bowlingBall.add(ball);
+    console.log("Model ball is added");
+  });
+
+  bumper.add(bowlingBall);
+
+  json_loader.load("model/bowling/bowling-pin.json", function (
+    geometry,
+    materials
+  ) {
+    var material = materials[1];
+    material.morphTargets = true;
+    material.color.setHex(0xff0000);
+
+    var faceMaterial = new THREE.MultiMaterial(materials);
+
+    for (var i = 0, xpin1 = -60, xpin2 = -40, xpin3 = -20; i < 10; i++) {
+      pin[i] = new THREE.Mesh(geometry, faceMaterial);
+      pin[i].castShadow = true;
+      pin[i].scale.set(15, 15, 15);
+
+      pin[i].position.y = 41;
+
+      if (i > 5) {
+        pin[i].position.z = -450;
+        ``;
+        pin[i].position.x = xpin1;
+        xpin1 += 40;
+      } else if (i > 2) {
+        pin[i].position.z = -420;
+        pin[i].position.x = xpin2;
+        xpin2 += 40;
+      } else if (i > 0) {
+        pin[i].position.z = -390;
+        pin[i].position.x = xpin3;
+        xpin3 += 40;
+      } else pin[i].position.z = -360;
+
+      bumper.add(pin[i]);
+    }
+  });
 }
