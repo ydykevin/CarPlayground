@@ -141,7 +141,8 @@ initScene = function () {
         new THREE.MeshFaceMaterial(car_materials)
       );
       mesh.position.y = 30;
-      mesh.position.x = 50;
+      mesh.position.x = 80;
+      mesh.position.z = 30;
       mesh.castShadow = mesh.receiveShadow = true;
 
       vehicle = new Physijs.Vehicle(

@@ -1,3 +1,8 @@
+"use strict";
+
+Physijs.scripts.worker = "js/physijs_worker.js";
+Physijs.scripts.ammo = "ammo.js";
+
 var pin = new Array(10);
 var bumper;
 var textureLoader = new THREE.TextureLoader();
@@ -11,31 +16,14 @@ function createBowling() {
 
 function createBumpers() {
   // Bumpers
-  var bumper_geom = new THREE.BoxGeometry(2, 1, 50);
+  var bumper_geom = new THREE.BoxGeometry(2, 1, 100);
 
   bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
     restitution: 0.2,
   });
   bumper.position.y = 1;
-  bumper.position.x = -24;
-  bumper.receiveShadow = true;
-  bumper.castShadow = true;
-  scene.add(bumper);
-
-  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
-    restitution: 0.2,
-  });
-  bumper.position.y = 1;
-  bumper.position.x = 24;
-  bumper.receiveShadow = true;
-  bumper.castShadow = true;
-  scene.add(bumper);
-
-  bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
-    restitution: 0.2,
-  });
-  bumper.position.y = 1;
-  bumper.position.z = -24;
+  bumper.position.z = 20;
+  bumper.position.x = 45;
   bumper.rotation.y = Math.PI / 2;
   bumper.receiveShadow = true;
   bumper.castShadow = true;
@@ -45,7 +33,8 @@ function createBumpers() {
     restitution: 0.2,
   });
   bumper.position.y = 1;
-  bumper.position.z = 24;
+  bumper.position.z = -10;
+  bumper.position.x = 45;
   bumper.rotation.y = Math.PI / 2;
   bumper.receiveShadow = true;
   bumper.castShadow = true;
@@ -59,7 +48,7 @@ function createBowlingBall() {
     console.log("Texture ball is added");
   });
 
-  ballMaterial = new THREE.ShaderMaterial({
+  var ballMaterial = new THREE.ShaderMaterial({
     uniforms: {
       tShine: { type: "t", value: imageBall },
       time: { type: "f", value: 0 },
@@ -68,21 +57,21 @@ function createBowlingBall() {
     shading: THREE.SmoothShading,
   });
 
-  bowlingBall = new THREE.Object3D();
-  bowlingBall.position.set(10, 0, 0);
+  var bowlingBall = new THREE.Object3D();
+  bowlingBall.position.set(0, 0, 0);
   bowlingBall.rotateX((90 * Math.PI) / 180);
 
   json_loader.load("model/bowling/bowling-ball.json", function (geometry) {
-    ball = new THREE.Mesh(geometry, ballMaterial);
+    var ball = new THREE.Mesh(geometry, ballMaterial);
     ball.scale.set(2, 2, 2);
     ball.rotateX(Math.PI);
-    ball.position.set(0, 0, 0);
+    ball.position.set(80, 10, -2);
     ball.castShadow = true;
     bowlingBall.add(ball);
     console.log("Model ball is added");
   });
 
-  bumper.add(bowlingBall);
+  scene.add(bowlingBall);
 }
 
 function createBowlingPin() {
@@ -101,7 +90,7 @@ function createBowlingPin() {
       pin[i].castShadow = true;
       pin[i].scale.set(1, 1, 1);
 
-      pin[i].position.y = 1;
+      pin[i].position.y = 2;
 
       if (i > 5) {
         pin[i].position.z = 5;
@@ -117,7 +106,7 @@ function createBowlingPin() {
         xpin3 += 4;
       } else pin[i].position.z = 14;
 
-      bumper.add(pin[i]);
+      scene.add(pin[i]);
     }
   });
 }
