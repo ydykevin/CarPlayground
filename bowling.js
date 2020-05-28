@@ -4,7 +4,7 @@ Physijs.scripts.worker = "js/physijs_worker.js";
 Physijs.scripts.ammo = "ammo.js";
 
 var pin = new Array(10);
-var bumper;
+var bumper, pin_material, ball_material
 var textureLoader = new THREE.TextureLoader();
 var json_loader = new THREE.JSONLoader();
 
@@ -42,51 +42,32 @@ function createBumpers() {
 }
 
 function createBowlingBall() {
-  var imageBall = textureLoader.load("/texture/bowlingBall.png", function (
-    texture
-  ) {
-    console.log("Texture ball is added");
-  });
-
-  var ballMaterial = new THREE.ShaderMaterial({
-    uniforms: {
-      tShine: { type: "t", value: imageBall },
-      time: { type: "f", value: 0 },
-      weight: { type: "f", value: 0 },
-    },
-    shading: THREE.SmoothShading,
-  });
-
-  var bowlingBall = new THREE.Object3D();
-  bowlingBall.position.set(0, 0, 0);
-  bowlingBall.rotateX((90 * Math.PI) / 180);
+  ball_material = Physijs.createMaterial(new THREE.MeshLambertMaterial({map: loader.load("/texture/bowlingBall.png")}))
 
   json_loader.load("model/bowling/bowling-ball.json", function (geometry) {
-    var ball = new THREE.Mesh(geometry, ballMaterial);
-    ball.scale.set(2, 2, 2);
-    ball.rotateX(Math.PI);
-    ball.position.set(80, 10, -2);
+    var ball = new Physijs.BoxMesh(geometry, ball_material)
+    ball.scale.set(3, 3, 3);
+    // ball.rotateX(Math.PI);
+    ball.position.set(80, 1.5, 3);
     ball.castShadow = true;
-    bowlingBall.add(ball);
+    scene.add(ball)
     console.log("Model ball is added");
   });
-
-  scene.add(bowlingBall);
 }
 
 function createBowlingPin() {
+
+  pin_material = Physijs.createMaterial(new THREE.MeshLambertMaterial())
+
   json_loader.load("model/bowling/bowling-pin.json", function (
     geometry,
     materials
   ) {
-    var material = materials[1];
-    material.morphTargets = true;
-    material.color.setHex(0xff0000);
-
+  
     var faceMaterial = new THREE.MultiMaterial(materials);
 
     for (var i = 0, xpin1 = -6, xpin2 = -4, xpin3 = -2; i < 10; i++) {
-      pin[i] = new THREE.Mesh(geometry, faceMaterial);
+      pin[i] = new Physijs.BoxMesh(geometry, faceMaterial)
       pin[i].castShadow = true;
       pin[i].scale.set(1, 1, 1);
 
