@@ -1,10 +1,17 @@
 var pin = new Array(10);
-// var loadingManager = new THREE.LoadingManager();
+var bumper;
 var textureLoader = new THREE.TextureLoader();
+var json_loader = new THREE.JSONLoader();
+
 function createBowling() {
+  createBumpers();
+  createBowlingBall();
+  createBowlingPin();
+}
+
+function createBumpers() {
   // Bumpers
-  var bumper,
-    bumper_geom = new THREE.BoxGeometry(2, 1, 50);
+  var bumper_geom = new THREE.BoxGeometry(2, 1, 50);
 
   bumper = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
     restitution: 0.2,
@@ -43,9 +50,9 @@ function createBowling() {
   bumper.receiveShadow = true;
   bumper.castShadow = true;
   scene.add(bumper);
+}
 
-  var json_loader = new THREE.JSONLoader();
-
+function createBowlingBall() {
   var imageBall = textureLoader.load("/texture/bowlingBall.png", function (
     texture
   ) {
@@ -56,23 +63,20 @@ function createBowling() {
 
   ballMaterial = new THREE.ShaderMaterial({
     uniforms: {
-        tShine: { type: "t", value: imageBall },
-        time: { type: "f", value: 0 },
-        weight: { type: "f", value: 0 }
+      tShine: { type: "t", value: imageBall },
+      time: { type: "f", value: 0 },
+      weight: { type: "f", value: 0 },
     },
     // vertexShader: document.getElementById( 'vertexShader' ).textContent,
     // fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
-    shading: THREE.SmoothShading
-});
+    shading: THREE.SmoothShading,
+  });
 
   bowlingBall = new THREE.Object3D();
   bowlingBall.position.set(10, 0, 0);
   bowlingBall.rotateX((90 * Math.PI) / 180);
 
-  json_loader.load("model/bowling/bowling-ball.json", function (
-    geometry,
-    materials
-  ) {
+  json_loader.load("model/bowling/bowling-ball.json", function (geometry) {
     ball = new THREE.Mesh(geometry, ballMaterial);
     ball.scale.set(2, 2, 2);
     ball.rotateX(Math.PI);
@@ -83,7 +87,9 @@ function createBowling() {
   });
 
   bumper.add(bowlingBall);
+}
 
+function createBowlingPin() {
   json_loader.load("model/bowling/bowling-pin.json", function (
     geometry,
     materials
