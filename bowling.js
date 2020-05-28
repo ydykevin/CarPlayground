@@ -1,4 +1,6 @@
 var pin = new Array(10);
+// var loadingManager = new THREE.LoadingManager();
+var textureLoader = new THREE.TextureLoader();
 function createBowling() {
   // Bumpers
   var bumper,
@@ -42,25 +44,43 @@ function createBowling() {
   bumper.castShadow = true;
   scene.add(bumper);
 
-  
   var json_loader = new THREE.JSONLoader();
 
+  var imageBall = textureLoader.load("/texture/bowlingBall.png", function (
+    texture
+  ) {
+    console.log("Texture ball is added");
+  });
+  imageBall.magFilter = THREE.NearestFilter;
+  imageBall.minFilter = THREE.NearestFilter;
+
+  ballMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+        tShine: { type: "t", value: imageBall },
+        time: { type: "f", value: 0 },
+        weight: { type: "f", value: 0 }
+    },
+    // vertexShader: document.getElementById( 'vertexShader' ).textContent,
+    // fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
+    shading: THREE.SmoothShading
+});
+
   bowlingBall = new THREE.Object3D();
-  bowlingBall.position.set(0, 23.5, 35);
+  bowlingBall.position.set(10, 0, 0);
   bowlingBall.rotateX((90 * Math.PI) / 180);
 
-  json_loader.load(
-    "model/bowling/bowling-ball.json",
-    function (geometry, materials) {
-      ball = new THREE.Mesh(geometry);
-      ball.scale.set(5, 5, 5);
-      ball.rotateX(Math.PI);
-      ball.position.set(0, 10, 0);
-      ball.castShadow = true;
-      bowlingBall.add(ball);
-      console.log("Model ball is added");
-    }
-  );
+  json_loader.load("model/bowling/bowling-ball.json", function (
+    geometry,
+    materials
+  ) {
+    ball = new THREE.Mesh(geometry, ballMaterial);
+    ball.scale.set(2, 2, 2);
+    ball.rotateX(Math.PI);
+    ball.position.set(0, 0, 0);
+    ball.castShadow = true;
+    bowlingBall.add(ball);
+    console.log("Model ball is added");
+  });
 
   bumper.add(bowlingBall);
 
