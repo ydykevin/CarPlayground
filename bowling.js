@@ -58,8 +58,6 @@ function createBowlingBall() {
   ) {
     console.log("Texture ball is added");
   });
-  imageBall.magFilter = THREE.NearestFilter;
-  imageBall.minFilter = THREE.NearestFilter;
 
   ballMaterial = new THREE.ShaderMaterial({
     uniforms: {
@@ -67,8 +65,6 @@ function createBowlingBall() {
       time: { type: "f", value: 0 },
       weight: { type: "f", value: 0 },
     },
-    // vertexShader: document.getElementById( 'vertexShader' ).textContent,
-    // fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
     shading: THREE.SmoothShading,
   });
 
@@ -100,27 +96,26 @@ function createBowlingPin() {
 
     var faceMaterial = new THREE.MultiMaterial(materials);
 
-    for (var i = 0, xpin1 = -60, xpin2 = -40, xpin3 = -20; i < 10; i++) {
+    for (var i = 0, xpin1 = -6, xpin2 = -4, xpin3 = -2; i < 10; i++) {
       pin[i] = new THREE.Mesh(geometry, faceMaterial);
       pin[i].castShadow = true;
-      pin[i].scale.set(15, 15, 15);
+      pin[i].scale.set(1, 1, 1);
 
-      pin[i].position.y = 41;
+      pin[i].position.y = 1;
 
       if (i > 5) {
-        pin[i].position.z = -450;
-        ``;
+        pin[i].position.z = 5;
         pin[i].position.x = xpin1;
-        xpin1 += 40;
+        xpin1 += 4;
       } else if (i > 2) {
-        pin[i].position.z = -420;
+        pin[i].position.z = 8;
         pin[i].position.x = xpin2;
-        xpin2 += 40;
+        xpin2 += 4;
       } else if (i > 0) {
-        pin[i].position.z = -390;
+        pin[i].position.z = 11;
         pin[i].position.x = xpin3;
-        xpin3 += 40;
-      } else pin[i].position.z = -360;
+        xpin3 += 4;
+      } else pin[i].position.z = 14;
 
       bumper.add(pin[i]);
     }
