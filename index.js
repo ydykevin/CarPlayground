@@ -7,11 +7,9 @@ Physijs.scripts.ammo = "ammo.js";
 var initScene,
     render,
     ground_material,
-    box_material,
     renderer,
     scene,
     ground,
-    light,
     camera,
     vehicle,
     bowlingball,
@@ -20,7 +18,14 @@ var initScene,
 var loadingManager = new THREE.LoadingManager();
 var textureLoader = new THREE.TextureLoader(loadingManager);
 
-initScene = function () {
+initScene = function() {
+    // Loader
+    loader = new THREE.TextureLoader();
+    //variable declaration
+    var input;
+    var json_loader = new THREE.JSONLoader();
+
+    // set up renderer of the scene
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
@@ -29,28 +34,6 @@ initScene = function () {
 
     scene = new Physijs.Scene();
     scene.setGravity(new THREE.Vector3(0, -30, 0));
-    scene.addEventListener("update", function () {
-        if (input && vehicle) {
-            if (input.direction !== null) {
-                input.steering += input.direction / 50;
-                if (input.steering < -0.6) input.steering = -0.6;
-                if (input.steering > 0.6) input.steering = 0.6;
-            }
-            vehicle.setSteering(input.steering, 0);
-            vehicle.setSteering(input.steering, 1);
-
-            if (input.power === true) {
-                vehicle.applyEngineForce(300);
-            } else if (input.power === false) {
-                vehicle.setBrake(20, 2);
-                vehicle.setBrake(20, 3);
-            } else {
-                vehicle.applyEngineForce(0);
-            }
-        }
-
-        scene.simulate(undefined, 2);
-    });
 
     camera = new THREE.PerspectiveCamera(
         35,
@@ -59,81 +42,14 @@ initScene = function () {
         1000
     );
     scene.add(camera);
+    //load map
+    createLight();
+    createBowling();
+    createGround();
+    createBoxes();
+    createRamp();
 
-    // Light
-    light = new THREE.DirectionalLight(0xffffff);
-    light.position.set(20, 40, -15);
-    light.target.position.copy(scene.position);
-    light.castShadow = true;
-    light.shadowCameraLeft = -60;
-    light.shadowCameraTop = -60;
-    light.shadowCameraRight = 60;
-    light.shadowCameraBottom = 60;
-    light.shadowCameraNear = 20;
-    light.shadowCameraFar = 200;
-    light.shadowBias = -0.0001;
-    light.shadowMapWidth = light.shadowMapHeight = 2048;
-    light.shadowDarkness = 0.7;
-    scene.add(light);
-
-    var input;
-
-    // Loader
-    loader = new THREE.TextureLoader();
-
-    // Materials
-    ground_material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({ map: loader.load("img/rocks.jpg") }),
-        0.8, // high friction
-        0.4 // low restitution
-    );
-    ground_material.map.wrapS = ground_material.map.wrapT =
-        THREE.RepeatWrapping;
-    ground_material.map.repeat.set(3, 3);
-
-    box_material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({ map: loader.load("img/plywood.jpg") }),
-        0.4, // low friction
-        0.6 // high restitution
-    );
-    box_material.map.wrapS = ground_material.map.wrapT = THREE.RepeatWrapping;
-    box_material.map.repeat.set(0.25, 0.25);
-
-    // Ground
-    var NoiseGen = new SimplexNoise();
-
-    var ground_geometry = new THREE.PlaneGeometry(500, 500, 100, 100);
-    for (var i = 0; i < ground_geometry.vertices.length; i++) {
-        var vertex = ground_geometry.vertices[i];
-        //vertex.y = NoiseGen.noise( vertex.x / 30, vertex.z / 30 ) * 1;
-    }
-    ground_geometry.computeFaceNormals();
-    ground_geometry.computeVertexNormals();
-
-    // If your plane is not square as far as face count then the HeightfieldMesh
-    // takes two more arguments at the end: # of x faces and # of z faces that were passed to THREE.PlaneMaterial
-    ground = new Physijs.HeightfieldMesh(
-        ground_geometry,
-        ground_material,
-        0 // mass
-    );
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
-    scene.add(ground);
-
-    for (i = 0; i < 50; i++) {
-        var size = Math.random() * 2 + 0.5;
-        var box = new Physijs.BoxMesh(
-            new THREE.BoxGeometry(size, size, size),
-            box_material
-        );
-        box.castShadow = box.receiveShadow = true;
-        box.position.set(Math.random() * 25 - 50, 5, Math.random() * 25 - 50);
-        scene.add(box);
-    }
-
-    var json_loader = new THREE.JSONLoader();
-
+    //load car model
     json_loader.load("model/car/carbody.js", function (car, car_materials) {
         json_loader.load("model/car/wheel.js", function (
             wheel,
@@ -173,6 +89,7 @@ initScene = function () {
                 );
             }
 
+            // car control
             input = {
                 power: null,
                 direction: null,
@@ -218,8 +135,30 @@ initScene = function () {
             });
         });
     });
-    createBowling();
-    createRamp();
+    
+    scene.addEventListener("update", function () {
+        if (input && vehicle) {
+            if (input.direction !== null) {
+                input.steering += input.direction / 50;
+                if (input.steering < -0.6) input.steering = -0.6;
+                if (input.steering > 0.6) input.steering = 0.6;
+            }
+            vehicle.setSteering(input.steering, 0);
+            vehicle.setSteering(input.steering, 1);
+
+            if (input.power === true) {
+                vehicle.applyEngineForce(300);
+            } else if (input.power === false) {
+                vehicle.setBrake(20, 2);
+                vehicle.setBrake(20, 3);
+            } else {
+                vehicle.applyEngineForce(0);
+            }
+        }
+
+        scene.simulate(undefined, 2);
+    });
+
     requestAnimationFrame(render);
     scene.simulate();
 };

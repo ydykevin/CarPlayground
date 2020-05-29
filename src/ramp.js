@@ -4,7 +4,7 @@ Physijs.scripts.worker = "js/physijs_worker.js";
 Physijs.scripts.ammo = "ammo.js";
 
 var ramp, ramp_material;
-var texture = new THREE.TextureLoader().load("./img/wood.jpg");
+// var texture = new THREE.TextureLoader().load("./img/wood.jpg");
 
 function createRamp() {
     // create ramp vertices
