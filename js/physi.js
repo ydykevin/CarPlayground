@@ -1384,7 +1384,7 @@ window.Physijs = (function() {
 			this.world.execute( 'applyEngineForce', { id: this._physijs.id, wheel: wheel, force: amount } );
 		} else if ( this.wheels.length > 0 ) {
 			for ( var i = 0; i < this.wheels.length; i++ ) {
-				this.world.execute( 'applyEngineForce', { id: this._physijs.id, wheel: i, force: amount } );
+				this.world.execute( 'applyEngineForce', { id: this._physijs.id, wheel: i, force: (i%2===0?1:-1)*amount } );
 			}
 		}
 	};

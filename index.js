@@ -32,22 +32,30 @@ initScene = function () {
   scene.setGravity(new THREE.Vector3(0, -30, 0));
   scene.addEventListener("update", function () {
     if (input && vehicle) {
+        if(input.reset){
+            scene.remove(vehicle);
+            resetCar();
+            input.power = null;
+            input.direction = null;
+            input.steering = 0;
+            input.reset = false;
+            vehicle.applyEngineForce(0);
+        }
       if (input.direction !== null) {
         input.steering += input.direction / 50;
-        if (input.steering < -0.6) input.steering = -0.6;
-        if (input.steering > 0.6) input.steering = 0.6;
+        if (input.steering < -0.4) input.steering = -0.4;
+        if (input.steering > 0.4) input.steering = 0.4;
       }
       vehicle.setSteering(input.steering, 0);
       vehicle.setSteering(input.steering, 1);
 
-      if (input.power === true) {
-        vehicle.applyEngineForce(300);
-      } else if (input.power === false) {
-        vehicle.setBrake(20, 2);
-        vehicle.setBrake(20, 3);
+      if (input.power !== null) {
+        console.log(input.power);
+        vehicle.applyEngineForce(input.power);
       } else {
         vehicle.applyEngineForce(0);
       }
+
     }
 
     scene.simulate(undefined, 2);
@@ -133,88 +141,104 @@ initScene = function () {
   }
 
   var json_loader = new THREE.JSONLoader();
+  var isSpeeding = false;
 
-  json_loader.load("model/car/carbody.js", function (car, car_materials) {
-    json_loader.load("model/car/wheel.js", function (wheel, wheel_materials) {
-      var mesh = new Physijs.BoxMesh(
-        car,
-        new THREE.MeshFaceMaterial(car_materials)
-      );
-      mesh.position.y = 30;
-      mesh.position.x = 80;
-      mesh.position.z = 30;
-      mesh.castShadow = mesh.receiveShadow = true;
 
-      vehicle = new Physijs.Vehicle(
-        mesh,
-        new Physijs.VehicleTuning(10.88, 1.83, 0.28, 500, 10.5, 6000)
-      );
-      scene.add(vehicle);
 
-      var wheel_material = new THREE.MeshFaceMaterial(wheel_materials);
+  var resetCar = function (){
+      json_loader.load("model/car/carbody.js", function (car, car_materials) {
+          json_loader.load("model/car/wheel.js", function (wheel, wheel_materials) {
+              var mesh = new Physijs.BoxMesh(
+                  car,
+                  new THREE.MeshFaceMaterial(car_materials)
+              );
+              mesh.position.y = 2;
+              mesh.position.x = 110;
+              mesh.position.z = 25;
+              mesh.rotation.y = 135;
+              mesh.castShadow = mesh.receiveShadow = true;
 
-      for (var i = 0; i < 4; i++) {
-        vehicle.addWheel(
-          wheel,
-          wheel_material,
-          new THREE.Vector3(i % 2 === 0 ? -1.6 : 1.6, -1, i < 2 ? 3.3 : -3.2),
-          new THREE.Vector3(0, -1, 0),
-          new THREE.Vector3(-1, 0, 0),
-          0.5,
-          0.7,
-          i < 2 ? false : true
-        );
-      }
+              vehicle = new Physijs.Vehicle(
+                  mesh,
+                  new Physijs.VehicleTuning(10.88, 1.83, 0.28, 500, 10.5, 6000)
+              );
+              scene.add(vehicle);
 
-      input = {
+              var wheel_material = new THREE.MeshFaceMaterial(wheel_materials);
+
+              for (var i = 0; i < 4; i++) {
+                  vehicle.addWheel(
+                      wheel,
+                      wheel_material,
+                      new THREE.Vector3(i % 2 === 0 ? -1.6 : 1.6, -1, i < 2 ? 3.3 : -3.2),
+                      new THREE.Vector3(0, -1, 0),
+                      new THREE.Vector3(i % 2 ===0? -1:1, 0, 0),
+                      0.6,
+                      0.7,
+                      i < 2 ? false : true
+                  );
+              }
+
+          });
+      });
+  }
+
+  resetCar();
+
+    input = {
         power: null,
         direction: null,
+        reset:false,
         steering: 0,
-      };
-      document.addEventListener("keydown", function (ev) {
-        switch (ev.keyCode) {
-          case 37: // left
+    };
+    document.addEventListener("keydown", function (ev) {
+        input.reset = false;
+        if(ev.keyCode===37){
             input.direction = 1;
-            break;
-
-          case 38: // forward
-            input.power = true;
-            break;
-
-          case 39: // right
+        }else if(ev.keyCode===38){
+            input.power = 200;
+        }else if(ev.keyCode===39){
             input.direction = -1;
-            break;
-
-          case 40: // back
-            input.power = false;
-            break;
+        }else if(ev.keyCode===40){
+            input.power = -150;
         }
-      });
-      document.addEventListener("keyup", function (ev) {
-        switch (ev.keyCode) {
-          case 37: // left
-            input.direction = null;
-            break;
-
-          case 38: // forward
-            input.power = null;
-            break;
-
-          case 39: // right
-            input.direction = null;
-            break;
-
-          case 40: // back
-            input.power = null;
-            break;
+        if(ev.keyCode===16 && !isSpeeding){
+            input.power *=3;
+            isSpeeding = true;
         }
-      });
+        if(ev.keyCode===82 && !input.reset){
+            input.reset = true;
+        }
     });
-  });
+    document.addEventListener("keyup", function (ev) {
+        if(ev.keyCode===37){
+            input.direction = null;
+        }else if(ev.keyCode===38){
+            input.power = null;
+        }else if(ev.keyCode===39){
+            input.direction = null;
+        }else if(ev.keyCode===40){
+            input.power = null;
+        }
+        if(ev.keyCode===16){
+            if(input.power){
+                input.power /=3;
+            }
+            isSpeeding = false;
+        }
+        if(ev.keyCode===82){
+            input.reset = false;
+        }
+    });
+
   createBowling();
   requestAnimationFrame(render);
   scene.simulate();
+
+
 };
+
+
 
 render = function () {
   requestAnimationFrame(render);
