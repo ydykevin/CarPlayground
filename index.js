@@ -59,7 +59,7 @@ initScene = function() {
                 car,
                 new THREE.MeshFaceMaterial(car_materials)
             );
-            mesh.position.y = 30;
+            mesh.position.y = 2;
             mesh.position.x = 80;
             mesh.position.z = 30;
             mesh.castShadow = mesh.receiveShadow = true;
@@ -168,7 +168,7 @@ render = function () {
     if (vehicle) {
         camera.position
             .copy(vehicle.mesh.position)
-            .add(new THREE.Vector3(40, 35, 40));
+            .add(new THREE.Vector3(110, 125, 110));
         camera.lookAt(vehicle.mesh.position);
     }
     renderer.render(scene, camera);
