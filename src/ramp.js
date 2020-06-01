@@ -36,7 +36,7 @@ function createRamp() {
     );
 
     ramp_material = Physijs.createMaterial(
-        new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+        new THREE.MeshBasicMaterial({ color: 0xffad33 }),
         0.2, // low friction
         0.6 // high restitution
     );
@@ -51,7 +51,7 @@ function createRamp() {
     });
     ramp.position.set(-1, 0, 60);
     ramp.rotation.y = Math.PI / 2;
-    ramp.receiveShadow = true;
+    ramp.receiveShadow = false;
     ramp.castShadow = true;
     scene.add(ramp);
 }

@@ -8,7 +8,7 @@ var ground, ground_material;
 function createGround() {
     // Materials
     ground_material = Physijs.createMaterial(
-        new THREE.MeshBasicMaterial({ color: 0x808080 }),
+        new THREE.MeshBasicMaterial({ color: 0xffce85 }),
         0.2, // low friction
         0.6 // high restitution
     );

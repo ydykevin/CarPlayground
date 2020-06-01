@@ -17,7 +17,7 @@ function createBowling() {
 function createBumpers() {
     // color of the ground
     ground_material = Physijs.createMaterial(
-        new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+        new THREE.MeshBasicMaterial({ color: 0xffad33 }),
         0.2, // low friction
         0.6 // high restitution
     );
@@ -28,12 +28,11 @@ function createBumpers() {
     bumper_left = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
         restitution: 0.2,
     });
-    bumper_left.material.color.setRGB(0, 1, 0);
     bumper_left.position.y = 1;
     bumper_left.position.z = 20;
     bumper_left.position.x = 45;
     bumper_left.rotation.y = Math.PI / 2;
-    bumper_left.receiveShadow = true;
+    bumper_left.receiveShadow = false;
     bumper_left.castShadow = true;
     scene.add(bumper_left);
 
@@ -44,7 +43,7 @@ function createBumpers() {
     bumper_right.position.z = -10;
     bumper_right.position.x = 45;
     bumper_right.rotation.y = Math.PI / 2;
-    bumper_right.receiveShadow = true;
+    bumper_right.receiveShadow = false;
     bumper_right.castShadow = true;
     scene.add(bumper_right);
 }
