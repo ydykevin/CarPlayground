@@ -170,12 +170,6 @@ render = function () {
             .copy(vehicle.mesh.position)
             .add(new THREE.Vector3(40, 35, 40));
         camera.lookAt(vehicle.mesh.position);
-
-        light.target.position.copy(vehicle.mesh.position);
-        light.position.addVectors(
-            light.target.position,
-            new THREE.Vector3(20, 20, -15)
-        );
     }
     renderer.render(scene, camera);
 };
