@@ -16,7 +16,7 @@ function createGround() {
     // Ground
     var NoiseGen = new SimplexNoise();
 
-    var ground_geometry = new THREE.PlaneGeometry(500, 500, 100, 100);
+    var ground_geometry = new THREE.PlaneGeometry(300, 300, 10, 10);
     for (var i = 0; i < ground_geometry.vertices.length; i++) {
         var vertex = ground_geometry.vertices[i];
         //vertex.y = NoiseGen.noise( vertex.x / 30, vertex.z / 30 ) * 1;
