@@ -43,6 +43,7 @@ initScene = function() {
     );
     scene.add(camera);
     //load map
+    createMapBorder();
     createLight();
     createBowling();
     createGround();
