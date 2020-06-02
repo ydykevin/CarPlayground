@@ -23,7 +23,7 @@ function createBumpers() {
     );
 
     // Bumpers
-    var bumper_geom = new THREE.BoxGeometry(2, 1, 100);
+    var bumper_geom = new THREE.BoxGeometry(1, 10, 100);
 
     bumper_left = new Physijs.BoxMesh(bumper_geom, ground_material, 0, {
         restitution: 0.2,
@@ -57,9 +57,9 @@ function createBowlingBall() {
 
     json_loader.load("model/bowling/bowling-ball.json", function (geometry) {
         var ball = new Physijs.BoxMesh(geometry, ball_material);
+        ball.position.set(80, 0.5, 2);
         ball.scale.set(3, 3, 3);
         // ball.rotateX(Math.PI);
-        ball.position.set(80, 1.5, 3);
         ball.castShadow = true;
         scene.add(ball);
     });
@@ -74,12 +74,12 @@ function createBowlingPin() {
     ) {
         var faceMaterial = new THREE.MultiMaterial(materials);
 
-        for (var i = 0, xpin1 = -6, xpin2 = -4, xpin3 = -2; i < 10; i++) {
+        for (var i = 0, xpin1 = -8, xpin2 = -5, xpin3 = -2; i < 10; i++) {
             pin[i] = new Physijs.BoxMesh(geometry, faceMaterial);
             pin[i].castShadow = true;
-            pin[i].scale.set(1, 1, 1);
+            pin[i].scale.set(2, 2, 2);
 
-            pin[i].position.y = 2;
+            pin[i].position.y = 8;
 
             if (i > 5) {
                 pin[i].position.z = 5;
