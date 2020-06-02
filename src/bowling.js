@@ -74,7 +74,7 @@ function createBowlingPin() {
     ) {
         var faceMaterial = new THREE.MultiMaterial(materials);
 
-        for (var i = 0, xpin1 = -8, xpin2 = -5, xpin3 = -2; i < 10; i++) {
+        for (var i = 0, xpin1 = -6, xpin2 = -4, xpin3 = -2; i < 10; i++) {
             pin[i] = new Physijs.BoxMesh(geometry, faceMaterial);
             pin[i].castShadow = true;
             pin[i].scale.set(2, 2, 2);
@@ -82,18 +82,18 @@ function createBowlingPin() {
             pin[i].position.y = 8;
 
             if (i > 5) {
-                pin[i].position.z = 5;
-                pin[i].position.x = xpin1;
-                xpin1 += 4;
+                pin[i].position.x = 0;
+                pin[i].position.z = xpin1;
+                xpin1 += 6;
             } else if (i > 2) {
-                pin[i].position.z = 8;
-                pin[i].position.x = xpin2;
-                xpin2 += 4;
+                pin[i].position.x = 5;
+                pin[i].position.z = xpin2;
+                xpin2 += 6;
             } else if (i > 0) {
-                pin[i].position.z = 11;
-                pin[i].position.x = xpin3;
-                xpin3 += 4;
-            } else pin[i].position.z = 14;
+                pin[i].position.x = 10;
+                pin[i].position.z = xpin3;
+                xpin3 += 6;
+            } else pin[i].position.x = 15;
 
             scene.add(pin[i]);
         }
