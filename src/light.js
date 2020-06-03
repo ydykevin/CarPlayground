@@ -19,5 +19,6 @@ function createLight() {
     light.shadowBias = -.0001
     light.shadowMapWidth = light.shadowMapHeight = 2048;
     light.shadowDarkness = .8;
+    light.shadowCameraVisible = true
     scene.add( light );
 }
