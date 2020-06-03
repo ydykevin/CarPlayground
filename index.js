@@ -147,6 +147,7 @@ render = function () {
             .add(new THREE.Vector3(110, 125, 110));
         camera.lookAt(vehicle.mesh.position);
     }
+    renderer.shadowMapType = THREE.PCFSoftShadowMap
     renderer.render(scene, camera);
 };
 
