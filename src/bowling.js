@@ -5,7 +5,7 @@ Physijs.scripts.ammo = "ammo.js";
 
 var pin = new Array(10);
 var bumper_left, bumper_right, pin_material, ball_material, ground_material;
-var textureLoader = new THREE.TextureLoader();
+var texture_loader = new THREE.TextureLoader();
 var json_loader = new THREE.JSONLoader();
 
 var listener = new THREE.AudioListener();
@@ -14,6 +14,7 @@ function createBowling() {
   createBumpers();
   createBowlingBall();
   createBowlingPin();
+  createHint()
 }
 
 function delete3DOBJ(objName) {
@@ -136,4 +137,17 @@ function createBowlingPin() {
       scene.add(pin[i]);
     }
   });
+}
+
+function createHint() {
+  texture_loader.load( "../img/hint.png", function ( texture ) {
+  var geometry = new THREE.BoxGeometry( 80, 50, .1);
+  var material = new THREE.MeshPhongMaterial({map:texture});
+  var hint = new THREE.Mesh( geometry, material );
+  hint.position.set(120,0,0);
+  hint.rotateX( 270* Math.PI / 180 );
+  hint.rotateZ(90*Math.PI / 180)
+  scene.add(hint);
+  console.log("Add Hint");
+});
 }
