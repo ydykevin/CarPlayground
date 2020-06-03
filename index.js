@@ -99,6 +99,11 @@ initScene = function () {
         if (ev.keyCode === 82) {
             input.reset = false;
         }
+        // Press B to reset bowling 
+        if (ev.keyCode === 66) {
+          resetBowling()
+          console.log('reset bowling area')
+        }
     });
 
     scene.addEventListener("update", function () {
