@@ -1,4 +1,4 @@
 # CarPlayground
 
 ## Bowling
-Press B to reset the bowling area
+Press `B` to reset the bowling area
