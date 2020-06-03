@@ -21,4 +21,6 @@ function createLight() {
     light.shadowDarkness = .8;
     light.shadowCameraVisible = true
     scene.add( light );
+    light = new THREE.AmbientLight( 0xaaaaaa,20 ); // soft white light
+    scene.add( light );
 }

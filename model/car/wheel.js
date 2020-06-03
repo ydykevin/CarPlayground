@@ -27,7 +27,7 @@
 {
 "DbgIndex" : 1,
 "DbgName"  : "tyre",
-"colorDiffuse"  : [0.8431, 0.8471, 0.4784],
+"colorDiffuse"  : [1, 1, 1],
 "colorSpecular"  : [0.8706, 0.8745, 0.4863],
 "opacity"  : 1.0,
 "specularCoef"  : 96.0784,

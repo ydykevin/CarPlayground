@@ -18,7 +18,7 @@ function createCar() {
             mesh.position.z = 25;
             mesh.rotation.y = 135;
             mesh.castShadow = mesh.receiveShadow = true;
-
+            
             vehicle = new Physijs.Vehicle(
                 mesh,
                 new Physijs.VehicleTuning(
@@ -46,7 +46,7 @@ function createCar() {
                         i < 2 ? 3.3 : -3.2
                     ),
                     new THREE.Vector3(0, -1, 0),
-                    new THREE.Vector3(i % 2 === 0 ? -1 : 1, 0, 0),
+                    new THREE.Vector3(-1, 0, 0),
                     0.6,
                     0.7,
                     i < 2 ? false : true

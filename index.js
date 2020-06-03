@@ -60,24 +60,26 @@ initScene = function () {
         steering: 0,
     };
 
+    var isSpeeding = false;
+
     document.addEventListener("keydown", function (ev) {
         input.reset = false;
         if (ev.keyCode === 37) {
             input.direction = 1;
         } else if (ev.keyCode === 38) {
-            input.power = 200;
+            input.power = 300;
         } else if (ev.keyCode === 39) {
             input.direction = -1;
         } else if (ev.keyCode === 40) {
-            input.power = -150;
+            input.power = -300;
         }
         if (ev.keyCode === 16 && !isSpeeding) {
-            input.power *= 3;
+            input.power=input.power>0?900:-900;
             isSpeeding = true;
         }
-        if (ev.keyCode === 82 && !input.reset) {
-            input.reset = true;
-        }
+        // if (ev.keyCode === 82 && !input.reset) {
+        //     input.reset = true;
+        // }
     });
 
     document.addEventListener("keyup", function (ev) {
@@ -92,12 +94,12 @@ initScene = function () {
         }
         if (ev.keyCode === 16) {
             if (input.power) {
-                input.power /= 3;
+                input.power=input.power>0?300:-300;
             }
             isSpeeding = false;
         }
-        if (ev.keyCode === 82) {
-            input.reset = false;
+        if (ev.keyCode === 82 && !input.reset) {
+            input.reset = true;
         }
         // Press B to reset bowling 
         if (ev.keyCode === 66) {
@@ -107,6 +109,7 @@ initScene = function () {
     });
 
     scene.addEventListener("update", function () {
+        
         if (input && vehicle) {
             if (input.reset) {
                 scene.remove(vehicle);
@@ -115,7 +118,6 @@ initScene = function () {
                 input.direction = null;
                 input.steering = 0;
                 input.reset = false;
-                vehicle.applyEngineForce(0);
             }
             if (input.direction !== null) {
                 input.steering += input.direction / 50;
@@ -130,6 +132,8 @@ initScene = function () {
                 vehicle.applyEngineForce(input.power);
             } else {
                 vehicle.applyEngineForce(0);
+                vehicle.setBrake(20, 2);
+                vehicle.setBrake(20, 3);
             }
         }
         scene.simulate(undefined, 2);

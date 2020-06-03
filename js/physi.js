@@ -879,6 +879,7 @@ window.Physijs = (function() {
 
 	Physijs.Scene.prototype.remove = function( object ) {
 		if ( object instanceof Physijs.Vehicle ) {
+			console.log("remove vehicle");
 			this.execute( 'removeVehicle', { id: object._physijs.id } );
 			while( object.wheels.length ) {
 				this.remove( object.wheels.pop() );
@@ -1384,7 +1385,7 @@ window.Physijs = (function() {
 			this.world.execute( 'applyEngineForce', { id: this._physijs.id, wheel: wheel, force: amount } );
 		} else if ( this.wheels.length > 0 ) {
 			for ( var i = 0; i < this.wheels.length; i++ ) {
-				this.world.execute( 'applyEngineForce', { id: this._physijs.id, wheel: i, force: (i%2===0?1:-1)*amount } );
+				this.world.execute( 'applyEngineForce', { id: this._physijs.id, wheel: i, force: amount } );
 			}
 		}
 	};
