@@ -14,6 +14,27 @@ function createBowling() {
     createBowlingPin();
 }
 
+function delete3DOBJ(objName){
+    var selectedObject = scene.getObjectByName(objName);
+    scene.remove( selectedObject );
+    // animate();
+}
+function clearBowling() {
+    
+    delete3DOBJ('ball')
+    console.log('remove Bowling Ball')
+    for(var i = 0; i<10;i++){
+        var pinName = 'pin'+i
+        delete3DOBJ(pinName)
+        console.log('remove '+pinName)
+    }
+}
+function resetBowling() {
+    clearBowling()
+    createBowlingBall();
+    createBowlingPin();
+}
+
 function createBumpers() {
     // color of the ground
     ground_material = Physijs.createMaterial(
@@ -61,6 +82,7 @@ function createBowlingBall() {
         ball.scale.set(3, 3, 3);
         // ball.rotateX(Math.PI);
         ball.castShadow = true;
+        ball.name = 'ball'
         scene.add(ball);
     });
 }
@@ -78,6 +100,8 @@ function createBowlingPin() {
             pin[i] = new Physijs.BoxMesh(geometry, faceMaterial);
             pin[i].castShadow = true;
             pin[i].scale.set(2, 2, 2);
+            pin[i].name = 'pin'+i
+            // console.log(pin[i].name)
 
             pin[i].position.y = 8;
 
