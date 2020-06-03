@@ -102,6 +102,10 @@ function createBowlingPin() {
             pin[i].scale.set(2, 2, 2);
             pin[i].name = 'pin'+i
             // console.log(pin[i].name)
+            pin[i].addEventListener( 'collision', function( other_object, relative_velocity, relative_rotation, contact_normal ) {
+                // `this` has collided with `other_object` with an impact speed of `relative_velocity` and a rotational force of `relative_rotation` and at normal `contact_normal`
+                console.log('collison')
+            });
 
             pin[i].position.y = 8;
 
