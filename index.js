@@ -144,6 +144,7 @@ initScene = function () {
 };
 
 render = function () {
+    console.log("treeDensity: "+treeDensity+", treeSize: "+treeSize+", Weather: "+weather+", particleDensity: "+particleDensity+", particleSize: "+particleSize+", particleSpeed: "+particleSpeed);
     requestAnimationFrame(render);
     if (vehicle) {
         camera.position
