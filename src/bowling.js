@@ -140,10 +140,11 @@ function createBowlingPin() {
 }
 
 function createHint() {
-  texture_loader.load( "../img/hint.png", function ( texture ) {
-  var geometry = new THREE.BoxGeometry( 80, 50, .1);
+  texture_loader.load( "../img/hint2.png", function ( texture ) {
+  var geometry = new THREE.BoxGeometry( 100, 50, .1);
   var material = new THREE.MeshPhongMaterial({map:texture});
   var hint = new THREE.Mesh( geometry, material );
+  hint.receiveShadow = true;
   hint.position.set(120,0,0);
   hint.rotateX( 270* Math.PI / 180 );
   hint.rotateZ(90*Math.PI / 180)
