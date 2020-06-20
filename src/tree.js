@@ -26,25 +26,6 @@ function load_url_query_params() {
     return query_params;
 }
 
-function dump_url_query_params() {
-    var all_params = {}
-    _.each(arguments, function(arg) {
-        for (var key in arg) {
-            if (!(_.isFunction(arg[key]) || _.isObject(arg[key])))
-            all_params[key] = arg[key];
-        }
-    });
-    var list_params = _.pairs(all_params);
-    var query_strings = _.map(list_params, function(pair){return pair.join("=")});
-    return "?" + encodeURIComponent(query_strings.join("&"));
-}
-
-function export_params(){
-    var base_url = location.href.split("?")[0];
-    var params = dump_url_query_params(angle_options, color_options, topology_options, {'generations' : generations});
-    alert("Copy this link to share with friends:\n" + base_url + params);    
-}
-
 var gui;
 var branchMaterial, leafMaterial, treeObject;
 
@@ -157,17 +138,17 @@ function init_TREE_GUI() {
     h.addColor(color_options, "branch_color").name("Branch Color");
     h.addColor(color_options, "leaf_color").name("Leaf Color");
 
-    // var h = gui.addFolder("Angle settings");
-    // h.add(angle_options, "angle").min(0.0).max(120.0).step(0.5).name("Trunk-branch angle");
-    // h.add(angle_options, "dihedral").min(-180.0).max(180.0).step(0.5).name("Dihedral rotation");
+    var h = gui.addFolder("Angle settings");
+    h.add(angle_options, "angle").min(0.0).max(120.0).step(0.5).name("Trunk-branch angle");
+    h.add(angle_options, "dihedral").min(-180.0).max(180.0).step(0.5).name("Dihedral rotation");
 
-    // var h = gui.addFolder("Topology settings");
-    // h.add(window, "generations").min(1).max(6).step(1).name("Generations");
-    // h.add(topology_options, "num_branches").min(1).max(6).step(1).name("Daughter count");
-    // h.add(topology_options, "aspect_ratio").min(1.0).max(20.0).step(0.1).name("Aspect ratio");
-    // h.add(topology_options, "shortening_factor").min(0.6).max(1.5).step(0.01).name("Shrinking ratio");
-    // h.add(topology_options, "core_branch").name("Z-axis continuation");
-    // h.add(window, "setup_tree").name("Rerender the tree");
+    var h = gui.addFolder("Topology settings");
+    h.add(window, "generations").min(1).max(6).step(1).name("Generations");
+    h.add(topology_options, "num_branches").min(1).max(6).step(1).name("Daughter count");
+    h.add(topology_options, "aspect_ratio").min(1.0).max(20.0).step(0.1).name("Aspect ratio");
+    h.add(topology_options, "shortening_factor").min(0.6).max(1.5).step(0.01).name("Shrinking ratio");
+    h.add(topology_options, "core_branch").name("Z-axis continuation");
+    h.add(window, "setup_tree").name("Rerender the tree");
 }
 
 function setup_tree() {
@@ -187,13 +168,4 @@ function animate() {
     update_colors();
     renderer.render(scene, camera);
     treeObject.rotation.y += 0.02;
-}
-
-function init_tree() {
-    for (var i = 0; i < 2; i++) {
-        // var size = Math.random() * 2 + 0.5;
-        setup_tree()
-        // box.position.set(Math.random() * 25 - 50, 5, Math.random() * 25 - 50);
-        // scene.add(box);
-    }
 }

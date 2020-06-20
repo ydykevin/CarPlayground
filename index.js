@@ -51,8 +51,8 @@ initScene = function () {
     createGround();
     createBoxes();
     createRamp();
-    init_tree()
     init_TREE_GUI()
+    // createTree()
     setup_tree()
 
     // car control
