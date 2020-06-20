@@ -32,6 +32,7 @@
     <script type="application/javascript" src="js/simplex-noise.js"></script>
     <script type="application/javascript" src="js/physi.js"></script>
     <script type="application/javascript" src="./src/walls.js"></script>
+    <script type="application/javascript" src="./src/rain.js"></script>
     <script type="application/javascript" src="./src/bowling.js"></script>
     <script type="application/javascript" src="./src/ramp.js"></script>
     <script type="application/javascript" src="./src/light.js"></script>
@@ -79,19 +80,14 @@
                             </div>
                         </li>
                         <li class="list-group-item"><label>Particle Density:</label><output name="particleDensityText"
-                                id="particleDensityText" style="float:right;">3</output>
-                            <input type="range" class="custom-range" value="3" min="1" max="5"
+                                id="particleDensityText" style="float:right;">5</output>
+                            <input type="range" class="custom-range" value="5" min="1" max="10"
                                 oninput="particleDensityText.value = this.value">
                         </li>
                         <li class="list-group-item"><label>Particle Size:</label><output name="particleSizeText"
-                                id="particleSizeText" style="float:right;">3</output>
-                            <input type="range" class="custom-range" value="3" min="1" max="5"
+                                id="particleSizeText" style="float:right;">5</output>
+                            <input type="range" class="custom-range" value="5" min="1" max="10"
                                 oninput="particleSizeText.value = this.value">
-                        </li>
-                        <li class="list-group-item"><label>Particle Speed:</label><output name="particleSpeedText"
-                                id="particleSpeedText" style="float:right;">3</output>
-                            <input type="range" class="custom-range" value="3" min="1" max="5"
-                                oninput="particleSpeedText.value = this.value">
                         </li>
                         <li class="list-group-item">
                             <center><button type="button" class="btn btn-primary" id="apply">Apply</button>
@@ -106,9 +102,9 @@
         var treeDensity = 3, //0-5
         treeSize = 3, //0-5
         weather = "rain", //"rain" or "snow"
-        particleDensity = 3, //0-5
-        particleSize = 3, //0-5
-        particleSpeed = 3; //0-5
+        particleDensity = 5, //1-10
+        particleSize = 5, //1-10
+        particleSpeed = 5; //1-10
 
         $("#header").click(function () {
             if ($("#header").attr("aria-expanded") === "true") {
@@ -124,7 +120,9 @@
             weather = $("#weather :checked").attr("id");
             particleDensity = $("#particleDensityText").text();
             particleSize = $("#particleSizeText").text();
-            particleSpeed = $("#particleSpeedText").text();
+            deleteRain();
+            deleteClouds();
+            createRain();
         });
     </script>
 </body>

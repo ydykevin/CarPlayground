@@ -37,12 +37,16 @@ initScene = function () {
     scene.setGravity(new THREE.Vector3(0, -30, 0));
 
     camera = new THREE.PerspectiveCamera(
-        35,
+        45,
         window.innerWidth / window.innerHeight,
         1,
         1000
     );
     scene.add(camera);
+
+    // The X axis is red. The Y axis is green. The Z axis is blue.
+    // var axesHelper = new THREE.AxisHelper(100);
+    // scene.add(axesHelper);
 
     //load map
     createMapBorder();
@@ -53,6 +57,7 @@ initScene = function () {
     createBoxes();
     createRamp();
     createWalls();
+    createRain();
 
     // car control
     input = {
