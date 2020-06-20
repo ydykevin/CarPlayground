@@ -112,6 +112,7 @@ initScene = function () {
         if (ev.keyCode === 66) {
             resetBowling();
             // console.log("reset bowling area");
+            resetWall();
         }
     });
 
