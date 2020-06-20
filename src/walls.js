@@ -14,7 +14,6 @@ function createWalls() {
     );
     createWall1();
     createWall2();
-    createWall3();
     createWall4();
 }
 
@@ -26,35 +25,8 @@ function createWall4() {
             createBlock(5, 90, 3 + i * 5, arrX1[j]);
         }
     }
-
-    console.log("Create Wall 1");
 }
-function createWall3() {
-    var arrX1 = [70, 76, 82, 88, 94];
-    var size = arrX1.length;
-    for (var i = 0; i < size; i++) {
-        createBlock(5, 50, 3, arrX1[i]);
-    }
-    size--;
 
-    for (var i = 0; i < size; i++) {
-        createBlock(5, 50, 8, arrX1[i] + 2.5);
-    }
-    size--;
-
-    for (var i = 0; i < size; i++) {
-        createBlock(5, 50, 13, arrX1[i] + 5);
-    }
-    size--;
-    for (var i = 0; i < size; i++) {
-        createBlock(5, 50, 18, arrX1[i] + 7.5);
-    }
-    size--;
-
-    for (var i = 0; i < size; i++) {
-        createBlock(5, 50, 23, arrX1[i] + 10);
-    }
-}
 function createWall2() {
     var arrX = [-45, -50, -55, -60, -65];
     for (var i = 0; i < arrX.length; i++) {
