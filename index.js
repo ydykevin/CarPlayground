@@ -51,6 +51,7 @@ initScene = function () {
     createGround();
     createBoxes();
     createRamp();
+    createWalls();
 
     // car control
     input = {

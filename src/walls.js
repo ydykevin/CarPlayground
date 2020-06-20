@@ -12,34 +12,28 @@ function createWalls() {
         0.4, // friction
         0.6 // restitution
     );
-
     createWall1();
-
     createWall2();
-
     createWall3();
-
     createWall4();
-
-    
 }
 
 function createWall4() {
-    var arrX1= [-40, -45, -50, -55, -60];
+    var arrX1 = [-40, -45, -50, -55, -60];
     var size = arrX1.length;
     for (let i = 0; i < size; i++) {
         for (let j = 0; j < size; j++) {
-            createBlock(5, 90, 3 + i * 5, arrX1[j]);        
-        } 
+            createBlock(5, 90, 3 + i * 5, arrX1[j]);
+        }
     }
 
     console.log("Create Wall 1");
 }
 function createWall3() {
-    var arrX1= [70, 76, 82, 88, 94];
+    var arrX1 = [70, 76, 82, 88, 94];
     var size = arrX1.length;
     for (var i = 0; i < size; i++) {
-        createBlock(5, 50, 3, arrX1[i]);        
+        createBlock(5, 50, 3, arrX1[i]);
     }
     size--;
 
@@ -60,39 +54,37 @@ function createWall3() {
     for (var i = 0; i < size; i++) {
         createBlock(5, 50, 23, arrX1[i] + 10);
     }
-
-    console.log("Create Wall 3");
 }
-function createWall2(){ 
-    var arrX = [-45,-50,-55,-60,-65];
-    for(var i = 0; i < arrX.length; i++){
+function createWall2() {
+    var arrX = [-45, -50, -55, -60, -65];
+    for (var i = 0; i < arrX.length; i++) {
         createBlock(5, -10, 3, arrX[i]);
-    }    
+    }
 
-    var arrX2 = [-45,-50,-55,-60];
-    for(var i = 0; i < arrX2.length; i++){
+    var arrX2 = [-45, -50, -55, -60];
+    for (var i = 0; i < arrX2.length; i++) {
         createBlock(5, -10, 8, arrX[i] - 2.5);
-        }
-    var arrX2 = [-45,-50,-55];
-    for(var i = 0; i < arrX2.length; i++){
+    }
+    var arrX2 = [-45, -50, -55];
+    for (var i = 0; i < arrX2.length; i++) {
         createBlock(5, -10, 13, arrX[i] - 2.5);
-        }
+    }
 
-        var arrX3 = [-45,-50];
-    for(var i = 0; i < arrX3.length; i++){
+    var arrX3 = [-45, -50];
+    for (var i = 0; i < arrX3.length; i++) {
         createBlock(5, -10, 18, arrX[i] - 2.5);
-        }
-        var arrX3 = [-45];
-    for(var i = 0; i < arrX3.length; i++){
-        createBlock(5, -10,23, arrX[i] - 2.5);
-        }
+    }
+    var arrX3 = [-45];
+    for (var i = 0; i < arrX3.length; i++) {
+        createBlock(5, -10, 23, arrX[i] - 2.5);
+    }
 }
-    
+
 function createWall1() {
-    var arrX1= [-40, -46, -52, -58, -64];
+    var arrX1 = [-40, -46, -52, -58, -64];
     var size = arrX1.length;
     for (var i = 0; i < size; i++) {
-        createBlock(5, 40, 3, arrX1[i]);        
+        createBlock(5, 40, 3, arrX1[i]);
     }
     size--;
 
@@ -114,8 +106,6 @@ function createWall1() {
     for (var i = 0; i < size; i++) {
         createBlock(5, 40, 23, arrX1[i] - 10);
     }
-
-    console.log("Create Wall 1");
 }
 
 var count = 0;
@@ -137,7 +127,7 @@ function delete3DOBJ(objName) {
     scene.remove(selectedObject);
 }
 function clearWall() {
-    for (var i = 0; i < count; i++){
+    for (var i = 0; i < count; i++) {
         let block_name = "block" + i;
         delete3DOBJ(block_name);
     }
