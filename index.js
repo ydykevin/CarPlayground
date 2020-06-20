@@ -58,7 +58,7 @@ initScene = function () {
     createRamp();
     createWalls();
     createRain();
-    createSnow();
+    
 
     // car control
     input = {
