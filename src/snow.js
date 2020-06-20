@@ -51,7 +51,7 @@ function animateSnow() {
     requestAnimationFrame(animateSnow);
 }
 
-function deletesnow() {
+function deleteSnow() {
     var selectedObject = scene.getObjectByName("snow");
     scene.remove(selectedObject);
 }

@@ -32,7 +32,7 @@ function createRain() {
     }
     rainMaterial = new THREE.PointsMaterial({
         color: 0x3756a0,
-        size: particleSize / 10,
+        size: particleSize / 5,
         transparent: true,
     });
     rain = new THREE.Points(rainGeo, rainMaterial);

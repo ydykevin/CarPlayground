@@ -100,8 +100,8 @@
     </div>
     <div id="viewport"></div>
     <script>
-        var treeDensity = 3, //0-5
-        treeSize = 3, //0-5
+        var treeDensity = 3, //1-5
+        treeSize = 3, //1-5
         weather = "rain", //"rain" or "snow"
         particleDensity = 5, //1-10
         particleSize = 5, //1-10
@@ -121,9 +121,24 @@
             weather = $("#weather :checked").attr("id");
             particleDensity = $("#particleDensityText").text();
             particleSize = $("#particleSizeText").text();
-            deleteRain();
-            deleteClouds();
-            createRain();
+            
+            if(weather==="rain"){
+                if(scene.getObjectByName("rain")){
+                    deleteRain();
+                    deleteClouds();
+                }else if(scene.getObjectByName("snow")){
+                    deleteSnow();
+                }
+                createRain();
+            }else if(weather==="snow"){
+                if(scene.getObjectByName("rain")){
+                    deleteRain();
+                    deleteClouds();
+                }else if(scene.getObjectByName("snow")){
+                    deleteSnow();
+                }
+                createSnow();
+            }
         });
     </script>
 </body>
