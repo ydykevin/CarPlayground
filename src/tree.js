@@ -1,4 +1,4 @@
-var L = 40;
+var L = 30;
 
 var query_params = load_url_query_params();
 
@@ -70,7 +70,7 @@ function update_colors(){
 
 function createBranch(generations_left, size, topology_options) {
     var to = topology_options;
-    var base_radius = size / to.aspect_ratio;
+    var base_radius = 1.2;
     var base_length = size;
 
     if (generations_left === 0) {
@@ -118,13 +118,10 @@ function createBranch(generations_left, size, topology_options) {
         }
         branchObject.position.y = base_length / 2;
 
-        // Method for setting angles and dihedrals of daughter branches
         branchObject.tweak = function (angle_options) {
             var ao = angle_options;
             alert(_)
             _.each(branchObject.children, function(child) {
-                // Ignore the branch mesh itself; we want to deal with 
-                // children's orientation to the branch itself.
                 if (!(child instanceof THREE.Mesh)) {
                     // We don't want to rotate all branches; just the non-core branches.
                     if (!child.is_core_branch) {
@@ -144,7 +141,7 @@ function createBranch(generations_left, size, topology_options) {
 function createTree (generations, topology_options) {
     var treeObj = createBranch(generations, L, topology_options);
     treeObj.is_core_branch = true;
-    treeObj.position.y = -L * generations * topology_options.shortening_factor * 0.5;
+    treeObj.position.y = -20
     treeObj.position.x = 120
     treeObj.position.z = 60
     treeObj.name = "Tree";
@@ -160,17 +157,17 @@ function init_TREE_GUI() {
     h.addColor(color_options, "branch_color").name("Branch Color");
     h.addColor(color_options, "leaf_color").name("Leaf Color");
 
-    var h = gui.addFolder("Angle settings");
-    h.add(angle_options, "angle").min(0.0).max(120.0).step(0.5).name("Trunk-branch angle");
-    h.add(angle_options, "dihedral").min(-180.0).max(180.0).step(0.5).name("Dihedral rotation");
+    // var h = gui.addFolder("Angle settings");
+    // h.add(angle_options, "angle").min(0.0).max(120.0).step(0.5).name("Trunk-branch angle");
+    // h.add(angle_options, "dihedral").min(-180.0).max(180.0).step(0.5).name("Dihedral rotation");
 
-    var h = gui.addFolder("Topology settings");
-    h.add(window, "generations").min(1).max(6).step(1).name("Generations");
-    h.add(topology_options, "num_branches").min(1).max(6).step(1).name("Daughter count");
-    h.add(topology_options, "aspect_ratio").min(1.0).max(20.0).step(0.1).name("Aspect ratio");
-    h.add(topology_options, "shortening_factor").min(0.6).max(1.5).step(0.01).name("Shrinking ratio");
-    h.add(topology_options, "core_branch").name("Z-axis continuation");
-    h.add(window, "setup_tree").name("Rerender the tree");
+    // var h = gui.addFolder("Topology settings");
+    // h.add(window, "generations").min(1).max(6).step(1).name("Generations");
+    // h.add(topology_options, "num_branches").min(1).max(6).step(1).name("Daughter count");
+    // h.add(topology_options, "aspect_ratio").min(1.0).max(20.0).step(0.1).name("Aspect ratio");
+    // h.add(topology_options, "shortening_factor").min(0.6).max(1.5).step(0.01).name("Shrinking ratio");
+    // h.add(topology_options, "core_branch").name("Z-axis continuation");
+    // h.add(window, "setup_tree").name("Rerender the tree");
 }
 
 function setup_tree() {
@@ -193,7 +190,10 @@ function animate() {
 }
 
 function init_tree() {
-    init_TREE_GUI();
-    setup_tree();
-    animate();    
+    for (var i = 0; i < 2; i++) {
+        // var size = Math.random() * 2 + 0.5;
+        setup_tree()
+        // box.position.set(Math.random() * 25 - 50, 5, Math.random() * 25 - 50);
+        // scene.add(box);
+    }
 }
