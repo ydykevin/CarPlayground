@@ -30,6 +30,7 @@ initScene = function () {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
+    renderer.shadowMapType = THREE.PCFSoftShadowMap;
     document.getElementById("viewport").appendChild(renderer.domElement);
 
     scene = new Physijs.Scene();
@@ -42,7 +43,7 @@ initScene = function () {
         1000
     );
     scene.add(camera);
-    
+
     //load map
     createMapBorder();
     createCar();
@@ -75,7 +76,7 @@ initScene = function () {
             input.power = -300;
         }
         if (ev.keyCode === 16 && !isSpeeding) {
-            input.power=input.power>0?900:-900;
+            input.power = input.power > 0 ? 900 : -900;
             isSpeeding = true;
         }
         // if (ev.keyCode === 82 && !input.reset) {
@@ -95,22 +96,21 @@ initScene = function () {
         }
         if (ev.keyCode === 16) {
             if (input.power) {
-                input.power=input.power>0?300:-300;
+                input.power = input.power > 0 ? 300 : -300;
             }
             isSpeeding = false;
         }
         if (ev.keyCode === 82 && !input.reset) {
             input.reset = true;
         }
-        // Press B to reset bowling 
+        // Press B to reset bowling
         if (ev.keyCode === 66) {
-          resetBowling()
-          console.log('reset bowling area')
+            resetBowling();
+            // console.log("reset bowling area");
         }
     });
 
     scene.addEventListener("update", function () {
-        
         if (input && vehicle) {
             if (input.reset) {
                 scene.remove(vehicle);
@@ -129,7 +129,7 @@ initScene = function () {
             vehicle.setSteering(input.steering, 1);
 
             if (input.power !== null) {
-                console.log(input.power);
+                // console.log(input.power);
                 vehicle.applyEngineForce(input.power);
             } else {
                 vehicle.applyEngineForce(0);
@@ -145,7 +145,20 @@ initScene = function () {
 };
 
 render = function () {
-    console.log("treeDensity: "+treeDensity+", treeSize: "+treeSize+", Weather: "+weather+", particleDensity: "+particleDensity+", particleSize: "+particleSize+", particleSpeed: "+particleSpeed);
+    // console.log(
+    //     "treeDensity: " +
+    //         treeDensity +
+    //         ", treeSize: " +
+    //         treeSize +
+    //         ", Weather: " +
+    //         weather +
+    //         ", particleDensity: " +
+    //         particleDensity +
+    //         ", particleSize: " +
+    //         particleSize +
+    //         ", particleSpeed: " +
+    //         particleSpeed
+    // );
     requestAnimationFrame(render);
     if (vehicle) {
         camera.position
@@ -153,7 +166,6 @@ render = function () {
             .add(new THREE.Vector3(110, 125, 110));
         camera.lookAt(vehicle.mesh.position);
     }
-    renderer.shadowMapType = THREE.PCFSoftShadowMap
     renderer.render(scene, camera);
 };
 
