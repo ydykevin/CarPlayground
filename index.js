@@ -58,6 +58,7 @@ initScene = function () {
     createRamp();
     createWalls();
     createRain();
+    //rainAudio.play();
     //createSnow();
     
 
@@ -139,10 +140,12 @@ initScene = function () {
             if (input.power !== null) {
                 // console.log(input.power);
                 vehicle.applyEngineForce(input.power);
+                engineAudio.play();
             } else {
                 vehicle.applyEngineForce(0);
                 vehicle.setBrake(20, 2);
                 vehicle.setBrake(20, 3);
+                engineAudio.pause();
             }
         }
         scene.simulate(undefined, 2);

@@ -109,6 +109,15 @@
                 </div>
             </div>
         </div>
+        <audio id="rainAudio" loop autoplay="true">
+            <source src="audio/rain.mp3" type="audio/mp3">
+        </audio>
+        <audio id="snowAudio" loop>
+            <source src="audio/snow.mp3" type="audio/mp3">
+        </audio>
+        <audio id="engineAudio" loop>
+            <source src="audio/engine.mp3" type="audio/mp3">
+        </audio>
     </div>
     <div id="viewport"></div>
     <script>
@@ -127,6 +136,11 @@
         particleDensity = 5, //1-10
         particleSize = 5, //1-10
         particleSpeed = 5; //1-10
+
+        var rainAudio = document.getElementById("rainAudio"); 
+        var snowAudio = document.getElementById("snowAudio"); 
+        var engineAudio = document.getElementById("engineAudio");
+        rainAudio.play();
 
         $("#header").click(function () {
             if ($("#header").attr("aria-expanded") === "true") {
@@ -151,6 +165,8 @@
                 }else if(scene.getObjectByName("snow")){
                     deleteSnow();
                 }
+                snowAudio.pause();
+                rainAudio.play();
                 createRain();
             }else if(weather==="snow"){
                 if(scene.getObjectByName("rain")){
@@ -159,28 +175,14 @@
                 }else if(scene.getObjectByName("snow")){
                     deleteSnow();
                 }
+                rainAudio.pause();
+                snowAudio.play();
                 createSnow();
             }
 
             clearBox();
             createBoxes();
         });
-
-        function hashCode(str) { // java String#hashCode
-            var hash = 0;
-            for (var i = 0; i < str.length; i++) {
-            hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            }
-            return hash;
-        } 
-
-        function intToRGB(i){
-            var c = (i & 0x00FFFFFF)
-                .toString(16)
-                .toUpperCase();
-
-            return "00000".substring(0, 6 - c.length) + c;
-        }
 
     </script>
 </body>
