@@ -3,7 +3,7 @@
 Physijs.scripts.worker = "js/physijs_worker.js";
 Physijs.scripts.ammo = "ammo.js";
 
-var block_material, loader;
+var block_material;
 
 function createWalls() {
     //loader = new THREE.TextureLoader();

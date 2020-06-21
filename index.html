@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css">
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -26,6 +28,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
+    
+    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.js"></script>    
 
 
     <script type="application/javascript" src="js/three.min.js"></script>
@@ -42,6 +46,7 @@
     <script type="application/javascript" src="./src/mapBorder.js"></script>
     <script type="application/javascript" src="./src/car.js"></script>
     <script type="application/javascript" src="index.js"></script>
+
 
 </head>
 
@@ -60,15 +65,22 @@
                 style="width: 300px;">
                 <div class="card-body" style="padding: 0px;">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><label>Tree Density:</label><output name="treeDensityText"
-                                id="treeDensityText" style="float:right;">3</output>
-                            <input type="range" class="custom-range" value="3" min="1" max="5"
-                                oninput="treeDensityText.value = this.value">
+                        <li class="list-group-item"><label>Box Color:</label><div name="boxColor"
+                            id="boxColor" style="float:right;width: 15px;height: 15px;background-color: red;"></div>
+                            <div id="cp2" class="input-group colorpicker-component">
+                                <input id="colorInput" type="text" value="#ff0000" class="form-control"/>
+                                <span class="input-group-addon"><i></i></span>
+                            </div>
                         </li>
-                        <li class="list-group-item"><label>Tree Size:</label><output name="treeSizeText"
-                                id="treeSizeText" style="float:right;">3</output>
-                            <input type="range" class="custom-range" value="3" min="1" max="5"
-                                oninput="treeSizeText.value = this.value">
+                        <li class="list-group-item"><label>Box Density:</label><output name="boxDensityText"
+                                id="boxDensityText" style="float:right;">5</output>
+                            <input type="range" class="custom-range" value="5" min="1" max="10"
+                                oninput="boxDensityText.value = this.value">
+                        </li>
+                        <li class="list-group-item"><label>Box Size:</label><output name="boxSizeText"
+                                id="boxSizeText" style="float:right;">5</output>
+                            <input type="range" class="custom-range" value="5" min="1" max="10"
+                                oninput="boxSizeText.value = this.value">
                         </li>
                         <li class="list-group-item" id="weather"><label style="margin-right: 20px;">Weather:</label>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -100,8 +112,17 @@
     </div>
     <div id="viewport"></div>
     <script>
-        var treeDensity = 3, //1-5
-        treeSize = 3, //1-5
+        $(function() {
+            $('#cp2').colorpicker();
+        });
+
+        $("#colorInput").change(function() { 
+            $("#boxColor").css("background-color",$(this).val());
+        });
+
+        var boxColor = 0xff0000;
+        boxDensity = 5, //1-10
+        boxSize = 5, //1-10
         weather = "rain", //"rain" or "snow"
         particleDensity = 5, //1-10
         particleSize = 5, //1-10
@@ -116,8 +137,9 @@
         });
 
         $("#apply").click(function(){
-            treeDensity = $("#treeDensityText").text();
-            treeSize = $("#treeSizeText").text();
+            boxColor = $("#boxColor").css( "background-color" );
+            boxDensity = $("#boxDensityText").text();
+            boxSize = $("#boxSizeText").text();
             weather = $("#weather :checked").attr("id");
             particleDensity = $("#particleDensityText").text();
             particleSize = $("#particleSizeText").text();
@@ -139,7 +161,27 @@
                 }
                 createSnow();
             }
+
+            clearBox();
+            createBoxes();
         });
+
+        function hashCode(str) { // java String#hashCode
+            var hash = 0;
+            for (var i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return hash;
+        } 
+
+        function intToRGB(i){
+            var c = (i & 0x00FFFFFF)
+                .toString(16)
+                .toUpperCase();
+
+            return "00000".substring(0, 6 - c.length) + c;
+        }
+
     </script>
 </body>
 
