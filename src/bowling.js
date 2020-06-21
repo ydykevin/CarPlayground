@@ -81,8 +81,7 @@ function createBowlingBall() {
   json_loader.load("model/bowling/bowling-ball.json", function (geometry) {
     var ball = new Physijs.BoxMesh(geometry, ball_material);
     ball.position.set(80, 0.5, 2);
-    ball.scale.set(ball_size, ball_size, ball_size);
-    console.log(ball_size)
+    ball.scale.set(3, 3, 3);
     // ball.rotateX(Math.PI);
     ball.castShadow = true;
     ball.name = "ball";
