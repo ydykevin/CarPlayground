@@ -4,7 +4,7 @@ Physijs.scripts.worker = "js/physijs_worker.js";
 Physijs.scripts.ammo = "ammo.js";
 
 var pin = new Array(10);
-var bumper_left, bumper_right, pin_material, ball_material, ground_material;
+var bumper_left, bumper_right, pin_material, ball_material, ground_material, ball_size;
 var texture_loader = new THREE.TextureLoader();
 var json_loader = new THREE.JSONLoader();
 
@@ -14,7 +14,7 @@ function createBowling() {
   createBumpers();
   createBowlingBall();
   createBowlingPin();
-  createHint()
+  createHint();
 }
 
 function delete3DOBJ(objName) {
@@ -81,12 +81,32 @@ function createBowlingBall() {
   json_loader.load("model/bowling/bowling-ball.json", function (geometry) {
     var ball = new Physijs.BoxMesh(geometry, ball_material);
     ball.position.set(80, 0.5, 2);
-    ball.scale.set(3, 3, 3);
+    ball.scale.set(ball_size, ball_size, ball_size);
+    console.log(ball_size)
     // ball.rotateX(Math.PI);
     ball.castShadow = true;
     ball.name = "ball";
     scene.add(ball);
   });
+}
+
+function init_BALL_GUI() {
+  var params = {
+    color: 0xff00ff,
+    size: 3
+  };
+
+  var gui = new dat.GUI();
+
+  var folder = gui.addFolder("BALL");
+
+  folder.addColor(params, "color").onChange(function () {
+    ball.set(params.color);
+  });
+  folder.add(params, "size").onChange(function() {
+    ball_size = params.size
+  })
+  folder.open();
 }
 
 function createBowlingPin() {
@@ -140,14 +160,14 @@ function createBowlingPin() {
 }
 
 function createHint() {
-  texture_loader.load( "../img/hint.png", function ( texture ) {
-  var geometry = new THREE.BoxGeometry( 80, 50, .1);
-  var material = new THREE.MeshPhongMaterial({map:texture});
-  var hint = new THREE.Mesh( geometry, material );
-  hint.position.set(120,0,0);
-  hint.rotateX( 270* Math.PI / 180 );
-  hint.rotateZ(90*Math.PI / 180)
-  scene.add(hint);
-  console.log("Add Hint");
-});
+  texture_loader.load("../img/hint.png", function (texture) {
+    var geometry = new THREE.BoxGeometry(80, 50, 0.1);
+    var material = new THREE.MeshPhongMaterial({ map: texture });
+    var hint = new THREE.Mesh(geometry, material);
+    hint.position.set(120, 0, 0);
+    hint.rotateX((270 * Math.PI) / 180);
+    hint.rotateZ((90 * Math.PI) / 180);
+    scene.add(hint);
+    console.log("Add Hint");
+  });
 }
